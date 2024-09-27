@@ -8,35 +8,18 @@ const { passwordUpdated } = require("../mail/templates/passwordUpdate")
 const Profile = require("../models/Profile")
 require("dotenv").config()
 
-// Signup Controller for Registering USers
 
 exports.signup = async (req, res) => {
   try {
-    // Destructure fields from the request body
-    const {
-      firstName,
-      lastName,
-      email,
-      password,
-      confirmPassword,
-      contactNumber,
-      otp,
-    } = req.body
-    // Check if All Details are there or not
-    if (
-      !firstName ||
-      !lastName ||
-      !email ||
-      !password ||
-      !confirmPassword ||
-      !otp
-    ) {
+    const { firstName, lastName, email, password, confirmPassword, contactNumber, otp, } = req.body
+    console.log(req.body);
+    if (!firstName || !lastName || !email || !password || !confirmPassword || !otp) {
       return res.status(403).send({
         success: false,
         message: "All Fields are required",
       })
     }
-    // Check if password and confirm password match
+
     if (password !== confirmPassword) {
       return res.status(400).json({
         success: false,
@@ -45,9 +28,10 @@ exports.signup = async (req, res) => {
       })
     }
 
-    // Check if user already exists
-    const existingUser = await User.findOne({ email })
-    if (existingUser) {
+    const existingUser = await User.findOne({ email });
+    console.log(existingUser);
+
+    if (existingUser != null) {
       return res.status(400).json({
         success: false,
         message: "User already exists. Please sign in to continue.",
@@ -56,7 +40,7 @@ exports.signup = async (req, res) => {
 
     // Find the most recent OTP for the email
     const response = await OTP.find({ email }).sort({ createdAt: -1 }).limit(1)
-    console.log(response)
+    console.log(response);
     if (response.length === 0) {
       // OTP not found for the email
       return res.status(400).json({
@@ -72,30 +56,37 @@ exports.signup = async (req, res) => {
     }
 
     // Hash the password
-    const hashedPassword = await bcrypt.hash(password, 10)
-
-    // Create the user
-    let approved = ""
-    approved === "Instructor" ? (approved = false) : (approved = true)
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     // Create the Additional Profile For User
-    const profileDetails = await Profile.create({
-      gender: null,
-      dateOfBirth: null,
-      about: null,
-      contactNumber: null,
-    })
-    const user = await User.create({
-      firstName,
-      lastName,
-      email,
-      contactNumber,
-      password: hashedPassword,
-      accountType: accountType,
-      approved: approved,
-      additionalDetails: profileDetails._id,
-      image: "",
-    })
+    const profileDetails = await Profile.create(
+      {
+        gender: null,
+        dateOfBirth: null,
+        about: null,
+        contactNumber: null,
+        interests: [],
+      }
+    );
+
+    const user = await User.create(
+      {
+        firstName,
+        lastName,
+        email,
+        contactNumber,
+        password: hashedPassword,
+        additionalDetails: profileDetails._id,
+        image: "",
+        enrolledCourses: [],
+        notes: [],
+        courseProgress: null,
+        token: null,
+        resetPasswordExpires: null,
+        favourites: [],
+        bookmarks: [],
+      }
+    );
 
     return res.status(200).json({
       success: true,
@@ -114,12 +105,9 @@ exports.signup = async (req, res) => {
 // Login controller for authenticating users
 exports.login = async (req, res) => {
   try {
-    // Get email and password from request body
     const { email, password } = req.body
 
-    // Check if email or password is missing
     if (!email || !password) {
-      // Return 400 Bad Request status code with error message
       return res.status(400).json({
         success: false,
         message: `Please Fill up All the Required Fields`,
@@ -129,33 +117,18 @@ exports.login = async (req, res) => {
     // Find user with provided email
     const user = await User.findOne({ email }).populate("additionalDetails")
 
-    // If user not found with provided email
     if (!user) {
-      // Return 401 Unauthorized status code with error message
       return res.status(401).json({
         success: false,
         message: `User is not Registered with Us Please SignUp to Continue`,
       })
     }
 
-    // Generate JWT token and Compare Password
     if (await bcrypt.compare(password, user.password)) {
-      const token = jwt.sign(
-        { email: user.email, id: user._id, role: user.role },
-        process.env.JWT_SECRET,
-        {
-          expiresIn: "24h",
-        }
-      )
+      const token = jwt.sign({ email: user.email, id: user._id }, process.env.JWT_SECRET, { expiresIn: "24h", });
 
-      // Save token to user document in database
-      user.token = token
-      user.password = undefined
-      // Set cookie for token and return success response
-      const options = {
-        expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
-        httpOnly: true,
-      }
+      user.token = token;
+      const options = { expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), httpOnly: true, }
       res.cookie("token", token, options).status(200).json({
         success: true,
         token,
@@ -181,7 +154,6 @@ exports.login = async (req, res) => {
 exports.sendotp = async (req, res) => {
   try {
     const { email } = req.body
-
     // Check if user is already present
     // Find user with provided email
     const checkUserPresent = await User.findOne({ email })
@@ -201,14 +173,13 @@ exports.sendotp = async (req, res) => {
       lowerCaseAlphabets: false,
       specialChars: false,
     })
+
     const result = await OTP.findOne({ otp: otp })
     console.log("Result is Generate OTP Func")
     console.log("OTP", otp)
     console.log("Result", result)
     while (result) {
-      otp = otpGenerator.generate(6, {
-        upperCaseAlphabets: false,
-      })
+      otp = otpGenerator.generate(6, { upperCaseAlphabets: false, })
     }
     const otpPayload = { email, otp }
     const otpBody = await OTP.create(otpPayload)
@@ -259,8 +230,8 @@ exports.changePassword = async (req, res) => {
         updatedUserDetails.email,
         "Password for your account has been updated",
         passwordUpdated(
-          updatedUserDetails.email,
-          `Password updated successfully for ${updatedUserDetails.firstName} ${updatedUserDetails.lastName}`
+          `updatedUserDetails.email,
+          Password updated successfully for ${updatedUserDetails.firstName} ${updatedUserDetails.lastName}`
         )
       )
       console.log("Email sent successfully:", emailResponse.response)
