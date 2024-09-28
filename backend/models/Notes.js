@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-// Define the RatingAndReview schema
+// Define the Notes schema
 const notesSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
@@ -37,10 +37,10 @@ const notesSchema = new mongoose.Schema({
     },
   ],
   createdAt: {
-    type: Data,
-    default: Date.now(),
+    type: Date,
+    default: Date.now,
   },
 });
 
-// Export the RatingAndReview model
+// Export the Notes model
 module.exports = mongoose.model("Notes", notesSchema);

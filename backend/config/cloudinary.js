@@ -1,14 +1,15 @@
-const cloudinary = require("cloudinary").v2; //! Cloudinary is being required
+require('dotenv').config()
+console.log(process.env.CLOUD_NAME,
+	process.env.API_SECRET,
+	process.env.API_KEY);
 
-exports.cloudinaryConnect = () => {
-	try {
-		cloudinary.config({
-			//!    ########   Configuring the Cloudinary to Upload MEDIA ########
-			cloud_name: process.env.CLOUD_NAME,
-			api_key: process.env.API_KEY,
-			api_secret: process.env.API_SECRET,
-		});
-	} catch (error) {
-		console.log(error);
-	}
-};
+
+const cloudinary = require('cloudinary').v2;
+
+cloudinary.config({
+	cloud_name: process.env.CLOUD_NAME,
+	api_key: process.env.API_SECRET,
+	api_secret: process.env.API_KEY,
+});
+
+module.exports = cloudinary;
