@@ -3,13 +3,13 @@ const app = express();
 
 const userRoutes = require("./routes/User");
 const profileRoutes = require("./routes/Profile");
+const notesRoutes = require("./routes/Notes");
 const paymentRoutes = require("./routes/Payments");
 const courseRoutes = require("./routes/Course");
 const contactUsRoute = require("./routes/Contact");
 const database = require("./config/database");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
-const { cloudinaryConnect } = require("./config/cloudinary");
 const dotenv = require("dotenv");
 const fileUpload = require("express-fileupload");
 
@@ -23,7 +23,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: "http://127.0.0.1:5500",
     credentials: true,
   })
 );
@@ -34,15 +34,14 @@ app.use(
     tempFileDir: "/tmp",
   })
 );
-//cloudinary connection
-cloudinaryConnect();
 
 //routes
 app.use("/api/v1/auth", userRoutes);
 app.use("/api/v1/profile", profileRoutes);
+app.use("/api/v1/notes", notesRoutes);
 app.use("/api/v1/course", courseRoutes);
-// app.use("/api/v1/payment", paymentRoutes);
 app.use("/api/v1/reach", contactUsRoute);
+// app.use("/api/v1/payment", paymentRoutes);
 
 //def route
 
