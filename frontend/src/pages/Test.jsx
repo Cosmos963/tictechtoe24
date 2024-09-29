@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import { FaBook, FaChalkboardTeacher, FaUserCircle } from "react-icons/fa";
 import { IoIosAddCircle } from "react-icons/io";
 import BookCard from "./BookCard";
+import { Link } from "react-router-dom";
 // BookCard Component
 
-export default function App() {
+export default function Test() {
   const [darkMode, setDarkMode] = useState(true); // default to dark mode
 
   const handleSearch = () => {
@@ -19,30 +20,32 @@ export default function App() {
   const books = [
     {
       title: "The Great Gatsby",
-      image: "https://example.com/great-gatsby.jpg", // Replace with actual image URLs
+      image: "#", // Replace with actual image URLs
     },
     {
       title: "To Kill a Mockingbird",
-      image: "https://example.com/to-kill-a-mockingbird.jpg",
+      image: "#",
     },
     {
       title: "1984",
-      image: "https://example.com/1984.jpg",
+      image: "#",
     },
     // Add more book objects as needed
   ];
 
   return (
     <>
-      <div className="bg-pure-greys-700 main flex h-screen">
+      <div className="bg-pure-greys-600 main flex h-screen">
         {/* Sidebar */}
         <div className="side flex flex-col gap-3 bg-gray-800 w-16 h-full items-center py-4 dark:bg-gray-900">
-          <div
-            className="icon flex justify-center min-h-fit my-3 transform hover:scale-125 transition-transform duration-300 hover:text-blue-400 text-gray-400 dark:text-gray-500"
-            title="Saved"
-          >
-            <FaBook size={25} />
-          </div>
+          <Link to="/posts">
+            <div
+              className="icon flex justify-center min-h-fit my-3 transform hover:scale-125 transition-transform duration-300 hover:text-blue-400 text-gray-400 dark:text-gray-500"
+              title="Saved"
+            >
+              <FaBook size={25} />
+            </div>
+          </Link>
           <div
             className="icon flex justify-center min-h-fit my-10 transform hover:scale-125 transition-transform duration-300 hover:text-blue-400 text-gray-400 dark:text-gray-500"
             title="Courses"
@@ -55,12 +58,14 @@ export default function App() {
           >
             <FaUserCircle size={25} />
           </div>
-          <div
-            className="icon flex justify-center min-h-fit my-10 transform hover:scale-125 transition-transform duration-300 hover:text-blue-400 text-gray-400 dark:text-gray-500"
-            title="Add New"
-          >
-            <IoIosAddCircle size={30} />
-          </div>
+          <Link to="/add">
+            <div
+              className="icon flex justify-center min-h-fit my-10 transform hover:scale-125 transition-transform duration-300 hover:text-blue-400 text-gray-400 dark:text-gray-500"
+              title="Add New"
+            >
+              <IoIosAddCircle size={30} />
+            </div>
+          </Link>
         </div>
 
         {/* Main Content */}
@@ -94,7 +99,7 @@ export default function App() {
           <div className="mt-4 flex justify-center">
             <select
               name=""
-              className="p-2 rounded-md mx-3 border-2 border-gray-700 bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+              className="p-2 rounded-md mx-3 border-2 border-gray-700 bg-pure-greys-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
               id=""
             >
               <option value="">Books</option>

@@ -1,0 +1,4 @@
+.wrap {
+  width: 12rem;
+  flex-wrap: wrap;
+}
