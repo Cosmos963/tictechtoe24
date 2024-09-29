@@ -30,7 +30,8 @@ import VideoDetails from "./components/core/ViewCourse/VideoDetails";
 import Instructor from "./components/core/Dashboard/InstructorDashboard/Instructor";
 import Test from "./pages/Test";
 import PostAdder from "./pages/PostAdder";
-import Post from "./pages/Post";
+
+import PostsList from "./pages/PostList";
 
 function App() {
   const dispatch = useDispatch();
@@ -93,7 +94,7 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/test" element={<Test />} />
-        <Route path="/posts" element={<Post />} />
+        <Route path="/posts" element={<PostsList />} />
         <Route path="/add" element={<PostAdder />} />
         <Route
           element={

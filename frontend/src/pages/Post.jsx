@@ -4,6 +4,7 @@ import { FaHeart, FaRegHeart, FaBookmark, FaRegBookmark } from "react-icons/fa";
 export default function Post({ title, author, createdAt, content, files }) {
   const [liked, setLiked] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [expanded, setExpanded] = useState(false);
 
   const handleLike = () => {
     setLiked(!liked);
@@ -13,95 +14,125 @@ export default function Post({ title, author, createdAt, content, files }) {
     setSaved(!saved);
   };
 
+  const toggleExpanded = () => {
+    setExpanded(!expanded);
+  };
+
   const renderFileContent = (file) => {
     if (file.type.startsWith("image/")) {
       return (
-        <img
-          src={file.url}
-          alt={file.name}
-          className="mt-2 w-full h-auto"
-          style={{ maxHeight: "400px" }}
-        />
+        <div className="rounded-lg overflow-hidden shadow-lg flex justify-center items-center">
+          <img
+            src={file.url}
+            alt={file.name}
+            className="mt-2 max-w-full h-auto object-cover"
+            style={{ maxHeight: "400px", width: "auto" }}
+          />
+        </div>
       );
     } else if (file.type === "application/pdf") {
       return (
-        <iframe
-          src={file.url}
-          className="mt-2 w-full"
-          style={{ height: "500px" }}
-          title={file.name}
-        ></iframe>
+        <div className="mt-2 rounded-lg overflow-hidden shadow-lg">
+          <iframe
+            src={file.url}
+            className="w-full"
+            style={{ height: "500px" }}
+            title={file.name}
+          ></iframe>
+        </div>
       );
     } else if (file.type.startsWith("video/")) {
       return (
-        <video
-          src={file.url}
-          controls
-          className="mt-2 w-full"
-          style={{ maxHeight: "400px" }}
-        ></video>
+        <div className="mt-2 rounded-lg overflow-hidden shadow-lg">
+          <video
+            src={file.url}
+            controls
+            className="w-full"
+            style={{ maxHeight: "400px" }}
+          ></video>
+        </div>
       );
     } else {
       return (
-        <a href={file.url} download className="text-blue-500 mt-2">
-          {file.name}
-        </a>
+        <div className="mt-2 bg-blue-50 p-4 rounded-lg shadow-md">
+          <a href={file.url} download className="text-blue-500">
+            {file.name}
+          </a>
+        </div>
       );
     }
   };
 
   return (
-    <div className="post bg-white p-6 rounded-lg shadow-lg mb-6">
+    <div className="post bg-white p-6 rounded-lg shadow-md mb-6 border border-gray-200 cursor-pointer">
       {/* Post Header */}
       <div className="flex justify-between items-center mb-4">
         <div>
-          <h1 className="text-xl font-bold">{title}</h1>
-          <p className="text-gray-600">
-            by {author} &bull; {new Date(createdAt).toLocaleString()}
+          <h1 className="text-2xl font-semibold">{title}</h1>
+          <p className="text-gray-500">
+            by <span className="font-medium">{author}</span> &bull;{" "}
+            {new Date(createdAt).toLocaleString()}
           </p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-4">
           {/* Like Button */}
           <button
-            className="focus:outline-none"
-            onClick={handleLike}
+            className="focus:outline-none transition-transform transform hover:scale-110"
+            onClick={(e) => {
+              e.stopPropagation(); // Prevent post expansion
+              handleLike();
+            }}
             title="Like Post"
           >
             {liked ? (
-              <FaHeart className="text-red-500" size={20} />
+              <FaHeart className="text-pink-400" size={24} />
             ) : (
-              <FaRegHeart className="text-gray-600" size={20} />
+              <FaRegHeart className="text-gray-600" size={24} />
             )}
           </button>
           {/* Save Button */}
           <button
-            className="focus:outline-none"
-            onClick={handleSave}
+            className="focus:outline-none transition-transform transform hover:scale-110"
+            onClick={(e) => {
+              e.stopPropagation(); // Prevent post expansion
+              handleSave();
+            }}
             title="Save Post"
           >
             {saved ? (
-              <FaBookmark className="text-yellow-500" size={20} />
+              <FaBookmark className="text-yellow-500" size={24} />
             ) : (
-              <FaRegBookmark className="text-gray-600" size={20} />
+              <FaRegBookmark className="text-gray-600" size={24} />
             )}
           </button>
         </div>
       </div>
 
       {/* Post Content */}
-      <div className="content text-gray-700 mb-4">
-        <p>{content}</p>
+      <div className="content text-gray-700 leading-relaxed mb-4">
+        <p>{expanded ? content : `${content.slice(0, 100)}...`}</p>
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            toggleExpanded();
+          }}
+          className="text-blue-500 focus:outline-none"
+        >
+          {expanded ? "Show Less" : "Read More"}
+        </button>
       </div>
 
       {/* Post Files */}
-      {files && files.length > 0 && (
+      {expanded && files && files.length > 0 && (
         <div className="files">
-          <h2 className="text-lg font-semibold mt-4">Files:</h2>
-          {files.map((file, index) => (
-            <div key={index} className="file mt-4">
-              {renderFileContent(file)}
-            </div>
-          ))}
+          <h2 className="text-lg font-semibold mt-4 mb-2">Attachments:</h2>
+          <div className="grid grid-cols-1 gap-4">
+            {files.map((file, index) => (
+              <div key={index} className="file">
+                {renderFileContent(file)}
+              </div>
+            ))}
+          </div>
         </div>
       )}
     </div>

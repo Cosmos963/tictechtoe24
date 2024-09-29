@@ -124,7 +124,7 @@ export default function Test() {
       </div>
 
       {/* Add the styles for the scroll animation */}
-      <style jsx>{`
+      <style>{`
         .animate-scroll {
           animation: scroll 20s linear infinite;
           white-space: nowrap;
