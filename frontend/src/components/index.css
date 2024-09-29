@@ -1,0 +1,57 @@
+:root {
+  --mainColor: #000814;
+	--secondaryColor: #ffffff;
+	--textColor: #ffffff;
+  --blue-gradient: linear-gradient(97.05deg, #4066ff 3.76%, #2949c6 100%);
+  --text-gradient: linear-gradient(to right, #1FA2FF, #12D8FA, #A6FFCB);
+  --shadow: 0px 23px 21px -8px rgba(162, 0, 255, 0.25);
+  background-color: var(--mainColor);
+}
+
+* {
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+	font-family: "Poppins", sans-serif;
+}
+
+.flexCenter {
+  display: flex;
+  row-gap: 2rem;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.innerWidth {
+  width: 100%;
+}
+
+.button-blue {
+  margin: 2rem 0.2rem;
+  font-weight : 500;
+  font-size: var(--textSize);
+  padding: 0.6rem 1.5rem; 
+  color: white;
+  background: var(--blue-gradient);
+  border: none;
+  border-radius: 4px;
+  transition: all 100ms ease-in;
+}
+
+.button-blue:hover {
+  cursor: pointer;
+  transform: scale(1.1);
+}
+
+.headings {
+  color:  var(--textColor);
+  margin-bottom: 0.6rem;
+}
+
+@media (min-width: 1536px) {
+	.innerWidth {
+	  max-width: 1280px;
+	  margin: auto;
+	}
+}

@@ -1,0 +1,28 @@
+.courses-wrapper {
+    margin: 0 auto;
+    height: 40rem;
+    background-color: var(--mainColor);
+}
+
+.courses-section {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    padding: 6rem 2rem;
+}
+
+.courses-right {
+    color: white;
+}
+
+.courses-right p {
+    color:  var(--textColor);
+    margin-bottom: 0.6rem;  
+}
+
+.courses-left img{
+    border-radius: 22px;
+    height: auto;
+}

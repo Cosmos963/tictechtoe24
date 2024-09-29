@@ -1,0 +1,35 @@
+.notes-wrapper {
+    margin: 0 auto;
+    height: 40rem;
+    background-color: var(--mainColor);
+}
+
+.notes-section {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    padding: 6rem 2rem;
+}
+
+.notes-right {
+    color: white;
+}
+
+.notes-right p {
+    color:  var(--textColor);
+    margin-bottom: 0.6rem;  
+}
+
+.notes-left imgage {
+    width: 100%;
+    height: auto;
+}
+
+#grad {
+    font-weight: bold;
+    background: var(--text-gradient);
+    background-clip: text;
+    color: transparent;
+}

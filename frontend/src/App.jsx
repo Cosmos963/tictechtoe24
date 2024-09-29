@@ -32,6 +32,7 @@ import Test from "./pages/Test";
 import PostAdder from "./pages/PostAdder";
 
 import PostsList from "./pages/PostList";
+import HeroFirst from "./components/HeroFirst";
 
 function App() {
   const dispatch = useDispatch();
@@ -43,7 +44,7 @@ function App() {
     <div className="w-screen min-h-screen bg-richblack-900 flex flex-col font-inter">
       <Navbar />
       <Routes>
-        <Route path="/" element={<Test />} />
+        <Route path="/" element={<HeroFirst />} />
         <Route path="catalog/:catalogName" element={<Catalog />} />
         <Route path="courses/:courseId" element={<CourseDetails />} />
 

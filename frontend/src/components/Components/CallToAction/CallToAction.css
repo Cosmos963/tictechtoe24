@@ -1,0 +1,26 @@
+.cta-wrapper {
+    padding: 4rem 0;
+    background-color: #0b0f1d;
+    /* Keep the dark background consistent with your theme */
+    text-align: center;
+}
+
+.cta-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#cta-title {
+    font-size: 3rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 1.6rem;
+}
+
+#cta-description {
+    font-size: 1.25rem;
+    color: var(--textColor);
+    margin-bottom: 1.6rem;
+}

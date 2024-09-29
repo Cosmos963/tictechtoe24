@@ -1,0 +1,25 @@
+.hero-wrapper {
+    margin: 0 auto;
+    background-color: var(--mainColor);
+}
+
+.hero-section {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 6rem 2rem;
+}
+
+.hero-left {
+    color: white;
+}
+  
+#grad {
+    font-weight: bold;
+    background-image: var(--text-gradient);
+    color: transparent;
+    background-clip: text;
+    -webkit-background-clip: text; /* For WebKit browsers */
+}
+
